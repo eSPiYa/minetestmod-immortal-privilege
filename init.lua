@@ -1,21 +1,19 @@
-minetest.register_privilege("immortal", {
-    description = "Privilege that makes players immune to damage",
-    give_to_singleplayer = false,
-})
-
 function make_player_immortal(player, is_immortal)
-    minetest.chat_send_player(player:get_player_name(), "Your max HP is " .. player:get_properties().hp_max)
-
     if is_immortal == true then
         player:set_hp(player:get_properties().hp_max * 2)
         player:set_armor_groups({immortal=1})
-        minetest.chat_send_player(name, name .. "You're an immortal!")
+        minetest.chat_send_player(player:get_player_name(), "You're an immortal!")
     else
         player:set_hp(player:get_properties().hp_max)
         player:set_armor_groups({immortal=0})
-        minetest.chat_send_player(name, "You're a mortal!")
+        minetest.chat_send_player(player:get_player_name(), "You're a mortal!")
     end
 end
+
+minetest.register_privilege("immortal", {
+    description = "Makes players immune to damage",
+    give_to_singleplayer = false,
+})
 
 minetest.register_on_joinplayer(function(player)
     if minetest.check_player_privs(player:get_player_name(), {immortal=true}) then
